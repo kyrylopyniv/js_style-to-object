@@ -13,25 +13,17 @@
  */
 function convertToObject(sourceString) {
   // write your code here
-  const objKeys = [];
-  const objValues = [];
-  const splittedSource = sourceString.split(';');
   const styleObj = {};
+  const splittedSource = sourceString.split(';')
+    .filter(element => element.length > 4)
+    .map(string => string.split(':'));
 
-  splittedSource.forEach(element => {
-    for (const i in element) {
-      if (element[i] === ':') {
-        objKeys.push(element.slice(0, i).trim());
-        objValues.push(element.slice(parseInt(i) + 1).trim());
-      }
-    }
-  });
+  for (const el in splittedSource) {
+    const [key, value] = splittedSource[el];
 
-  for (const el in objKeys) {
-    styleObj[objKeys[el]] = `${objValues[el]}`;
+    styleObj[key.trim()] = value.trim();
   }
 
   return styleObj;
 }
-
 module.exports = convertToObject;
